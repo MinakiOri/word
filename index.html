@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/Shift-JIS; charset=utf-8" />
+<title>ToeicWord</title>
+</head>
+<body>
+ <p><font size="3 color="black">TOEIC</font></p>
+ <div id = "test">1</div>
+ <table id = "tb"></table>
+<button onclick="getCSV()">test</button>
+
+</body>
+</html>
+<script type = "text/javascript">
+    function getCSV(){
+        var req = new XMLHttpRequest();
+        req.open("get","toeicword.csv",true)
+        req.overrideMimeType('text/Shift-JIS; charset=utf-8');
+        req.send(null);
+        req.onload = function(){
+            csvtoarray(req.responseText);
+        }
+    }
+    function csvtoarray(str){
+        var result = [];
+        var tmp = str.split("\n");
+        for(var i=0;i<tmp.length;++i){
+            result[i]=tmp[i].split(',');
+        }
+        document.getElementById("test").innerHTML = result[0];
+        tbch(result);
+    }
+    getCSV();
+    function tbch(result){
+        var ta = document.createElement("table");
+        var r = ram(result.length);
+        for(var i=0;i<5;i++){
+            var tr = document.createElement("tr");
+            for(var j=0;j<5;j++){
+                var td = document.createElement("td");
+                td.textContent = result[r[i*5+j]][1];
+                td.onclick = function(){
+                    var row = this.parentNode.rowIndex;
+                    var colum = this.cellIndex;
+                    document.getElementById("test").innerHTML=row +":"+colum;
+                };
+                tr.appendChild(td);
+            }
+            ta.appendChild(tr);
+        }
+        document.getElementById("tb").appendChild(ta);
+    }
+    function ram(num){
+        var ar = [...Array(num).keys()];
+        for(var i=0;i<num;i++){
+            var rn = Math.floor(Math.random()*num);
+            var t = ar[i];
+            ar[i] = ar[rn];
+            ar[rn] = t;
+        }
+        return ar;
+    }
+    
+</script>
