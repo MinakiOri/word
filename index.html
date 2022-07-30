@@ -21,6 +21,7 @@
     var cellid = "tr"; 
     var count = 0;
     var ansern = [0,0];
+    var flag = 0;
     function getCSV(){
         var req = new XMLHttpRequest();
         req.open("get","toeicword.csv",true)
@@ -53,13 +54,28 @@
                 var td = document.createElement("td");
                 td.textContent = String(r[i*5+j]).padStart( 2 , "0" )+":"+result[r[i*5+j]][1];
                 td.id = "tb:"+i+":"+j;
+                cellid = td.id;
                 td.onclick = function(){
-                    var row = this.parentNode.rowIndex;
-                    var colum = this.cellIndex;
-                    var id = this.id;
-                    col(id);
+                    cellid = this.id;
+                    col();
                 };
+                var bu1 = document.createElement("button");
+                bu1.innerHTML = "T";
+                bu1.id = "bu1:"+i+":"+j;
+                bu1.onclick = function(){
+                    cellid = this.id;
+                    AnserT();
+                };
+                var bu2 = document.createElement("button");
+                bu2.innerHTML = "F";
+                bu2.id = "bu2:"+i+":"+j;
+                bu2.onclick = function(){
+                    cellid = this.id;
+                    AnserF();
+                }
                 tr.appendChild(td);
+                tr.appendChild(bu1);
+                tr.appendChild(bu2);
                 cellf[i][j] = 0;
                 count ++;
             }
@@ -79,19 +95,30 @@
         r = ar;
         return ar;
     }
-    function col(id){
+    var sw = 0;
+    function col(){
         if(r.length > (ansern[0]+ansern[1]) && ansern[1]<25){
-            cellid = id;
-            var cell = document.getElementById(id);
+            var cell = document.getElementById(cellid);
             var num = cell.innerHTML.split(':');
-            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
+            if(sw == 0){
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][2];
+            sw = 1;
+            }
+            else if(sw == 1){
+                document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
+                sw = 0;
+            }
         }
     }
     function AnserT(){
-        var cell = document.getElementById(cellid);
+        sw = 0;
+        if(flag == 0){
         var cellst = cellid.split(":");
+        var tag = "tb:"+cellst[1]+":"+cellst[2];
+        var cell = document.getElementById(tag);
+        var num = cell.innerHTML.split(':');
         if(r.length <= (ansern[0]+ansern[1])){
-            cell.style.backgroundColor = "red";
+            cell.style.backgroundColor = "green";
             finish();
         }
         else if(ansern[1]>=25){
@@ -101,20 +128,24 @@
             cell.style.backgroundColor = "green";
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[0]++;
-            document.getElementById("test").innerHTML = "Anser";
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         else if(cellid != "tr" && cellf[cellst[1]][cellst[2]]==0){
             cell.textContent = String(r[count]).padStart( 2 , "0" )+":"+words[r[count]][1];
             cellid = "tr";
             ansern[0]++;
             count++;
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
-        document.getElementById("test").innerHTML ="Anser";
+    }
     }
     function AnserF(){
-        var cell = document.getElementById(cellid);
+        sw = 0;
+        if(flag == 0){
         var cellst = cellid.split(":");
+        var tag = "tb:"+cellst[1]+":"+cellst[2];
+        var cell = document.getElementById(tag);
         if(r.length <= (ansern[0]+ansern[1])){
             cell.style.backgroundColor = "red";
             finish();
@@ -126,12 +157,13 @@
             cell.style.backgroundColor = "red";
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[1]++;
-            document.getElementById("test").innerHTML = "Anser";
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
-        
+    }
     }
     function finish(){
         document.getElementById("test").innerHTML = "Finish"
+        flag = 1;
     }
 </script>
