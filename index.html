@@ -6,20 +6,28 @@
 </head>
 <body>
  <p><font size="3 color="black">TOEIC</font></p>
- <div id = "test">1</div>
+ <nobr id = "nown">0</nobr>/<nobr id ="alln">0</nobr>
  <table id = "tb"></table>
-<button onclick="getCSV()">test</button>
+ <div id = "test">Anser</div>
+ <button onclick="AnserT()">Ture</button>
+ <button onclick="AnserF()">False</button> 
 
 </body>
 </html>
 <script type = "text/javascript">
+    var words = new Array();
+    var r = new Array();
+    var cellf = new Array();
+    var cellid = "tr"; 
+    var count = 0;
+    var ansern = [0,0];
     function getCSV(){
         var req = new XMLHttpRequest();
         req.open("get","toeicword.csv",true)
         req.overrideMimeType('text/Shift-JIS; charset=utf-8');
         req.send(null);
         req.onload = function(){
-            csvtoarray(req.responseText);
+            words = csvtoarray(req.responseText);
         }
     }
     function csvtoarray(str){
@@ -28,28 +36,37 @@
         for(var i=0;i<tmp.length;++i){
             result[i]=tmp[i].split(',');
         }
-        document.getElementById("test").innerHTML = result[0];
         tbch(result);
+        return result;
     }
-    getCSV();
+    document.addEventListener('DOMContentLoaded',function(){
+        getCSV();
+    },false);
     function tbch(result){
         var ta = document.createElement("table");
         var r = ram(result.length);
+        document.getElementById("alln").innerHTML = r.length;
         for(var i=0;i<5;i++){
             var tr = document.createElement("tr");
+            cellf[i] = [];
             for(var j=0;j<5;j++){
                 var td = document.createElement("td");
-                td.textContent = result[r[i*5+j]][1];
+                td.textContent = String(r[i*5+j]).padStart( 2 , "0" )+":"+result[r[i*5+j]][1];
+                td.id = "tb:"+i+":"+j;
                 td.onclick = function(){
                     var row = this.parentNode.rowIndex;
                     var colum = this.cellIndex;
-                    document.getElementById("test").innerHTML=row +":"+colum;
+                    var id = this.id;
+                    col(id);
                 };
                 tr.appendChild(td);
+                cellf[i][j] = 0;
+                count ++;
             }
             ta.appendChild(tr);
         }
         document.getElementById("tb").appendChild(ta);
+        document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
     }
     function ram(num){
         var ar = [...Array(num).keys()];
@@ -59,7 +76,62 @@
             ar[i] = ar[rn];
             ar[rn] = t;
         }
+        r = ar;
         return ar;
     }
-    
+    function col(id){
+        if(r.length > (ansern[0]+ansern[1]) && ansern[1]<25){
+            cellid = id;
+            var cell = document.getElementById(id);
+            var num = cell.innerHTML.split(':');
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
+        }
+    }
+    function AnserT(){
+        var cell = document.getElementById(cellid);
+        var cellst = cellid.split(":");
+        if(r.length <= (ansern[0]+ansern[1])){
+            cell.style.backgroundColor = "red";
+            finish();
+        }
+        else if(ansern[1]>=25){
+            finish();
+        }
+        else if(r.length <= count && cellf[cellst[1]][cellst[2]]==0){
+            cell.style.backgroundColor = "green";
+            cellf[cellst[1]][cellst[2]] = 1;
+            ansern[0]++;
+            document.getElementById("test").innerHTML = "Anser";
+        }
+        else if(cellid != "tr" && cellf[cellst[1]][cellst[2]]==0){
+            cell.textContent = String(r[count]).padStart( 2 , "0" )+":"+words[r[count]][1];
+            cellid = "tr";
+            ansern[0]++;
+            count++;
+        }
+        document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+        document.getElementById("test").innerHTML ="Anser";
+    }
+    function AnserF(){
+        var cell = document.getElementById(cellid);
+        var cellst = cellid.split(":");
+        if(r.length <= (ansern[0]+ansern[1])){
+            cell.style.backgroundColor = "red";
+            finish();
+        }
+        else if(ansern[1]>=25){
+            finish();
+        }
+        else if(cellf[cellst[1]][cellst[2]]==0){
+            cell.style.backgroundColor = "red";
+            cellf[cellst[1]][cellst[2]] = 1;
+            ansern[1]++;
+            document.getElementById("test").innerHTML = "Anser";
+        }
+        document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+        
+    }
+    function finish(){
+        document.getElementById("test").innerHTML = "Finish"
+    }
 </script>
