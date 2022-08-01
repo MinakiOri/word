@@ -1,19 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta http-equiv="Content-Type" content="text/Shift-JIS; charset=utf-8" />
-<title>ToeicWord</title>
+<meta http-equiv="Content-Type" content="text/Shift-JIS; charset=utf-8 width=device-width, initial-scale=1.0">
+<title>WordRmember</title>
 </head>
-<body>
- <p><font size="3 color="black">TOEIC</font></p>
- <nobr id = "nown">0</nobr>/<nobr id ="alln">0</nobr>
- <table id = "tb"></table>
- <div id = "test">Anser</div>
- <button onclick="AnserT()">Ture</button>
- <button onclick="AnserF()">False</button> 
+<header>
+	<h1 style="text-align: center"><font color = "white">Word</font></h1>
+</header>
 
+<body>
+ <table style="border:none"><tr><td style="border:none"><div id = "nown" >0</div></td>
+            <td style="border:none">/</td>
+            <td style="border:none"><div id ="alln">0</div></td></tr></table>
+ <table id = "tb" style="text-align: center"></table>
+ <div id = "test" style="text-align: center">Anser</div>
+ <div style="text-align: center">
+ <button style="text-align: center" onclick="AnserT()">Ture</button>
+ <button style="text-align: center" onclick="AnserF()">False</button>
+ </div>  
 </body>
+<footer>
+    <div style="text-align: right" id = "cou"><font color = "black"></font></div>
+    <div style="text-align: right" id = "time"><font color = "white"></font></@>
+</footer>
 </html>
+    
+
+<style type = "text/css">
+    *{
+        margin:0;
+        padding: 0px;
+    }
+    body { 
+    margin: 0px;
+    -webkit-text-size-adjust: 100%;
+    }
+    header {
+	position: relative;
+	height: 10vh;
+    width: 100%;
+    background: url(head2.jpg) center / cover;
+    }
+    footer {
+	position: relative;
+	height: 10vh;
+    width: 100%;
+    background: url(head2.jpg) center / cover;
+    position: absolute;
+    bottom: 0; 
+    }
+    td {
+      border: solid 1px;
+      width:auto;
+   }
+   table{
+      border: solid 1px;
+      border-collapse:  collapse;
+    }
+</style>
 <script type = "text/javascript">
     var words = new Array();
     var r = new Array();
@@ -165,5 +209,35 @@
     function finish(){
         document.getElementById("test").innerHTML = "Finish"
         flag = 1;
+    }
+    function Time() {
+    var realTime = new Date();
+    var hour = realTime.getHours();
+    var minutes  = realTime.getMinutes();
+    var seconds  = realTime.getSeconds();
+    var text = hour + ":" + minutes + ":" + seconds;
+    document.getElementById("time").innerHTML = text;
+    document.getElementById("time").style.color = "white";
+    }
+    setInterval('Time()',1000);
+    const cookies = document.cookie; // クッキーを全部取得
+    const cookiesArray = cookies.split('; '); // 'キー=値'の形で分割して配列に入れる
+
+    for (const cookie of cookiesArray) {
+    const cookieArray = cookie.split('='); // キーと値をさらに分割して配列に入れる
+
+    if (cookieArray[0] !== 'count') {
+    document.cookie = 'count=1; path=/';
+    document.getElementById("cou").innerHTML = "1th time";
+    document.getElementById("cou").style.color = "white";
+    }
+
+    if (cookieArray[0] === 'count') {
+    let accessCount = parseInt(cookieArray[1]); 
+    accessCount++;
+    document.cookie = 'count=' + accessCount + '; path=/';
+    document.getElementById("cou").innerHTML = accessCount +"th time";
+    document.getElementById("cou").style.color = "white";
+    }
     }
 </script>
