@@ -193,6 +193,7 @@
         var cellst = cellid.split(":");
         var tag = "tb:"+cellst[1]+":"+cellst[2];
         var cell = document.getElementById(tag);
+        var num = cell.innerHTML.split(':');
         if(r.length <= (ansern[0]+ansern[1])){
             cell.style.backgroundColor = "red";
             finish();
