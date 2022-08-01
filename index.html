@@ -17,8 +17,7 @@
         <table id = "tb" style="text-align: center"></table>
         <div id = "test" style="text-align: center">Anser</div>
         <div style="text-align: center">
-            <button style="text-align: center" onclick="AnserT()">Ture</button>
-            <button style="text-align: center" onclick="AnserF()">False</button>
+            <button style="text-align: center" onclick="lastF()">False</button>
         </div>  
     </body>
     <footer>
@@ -69,6 +68,7 @@
     var count = 0;
     var ansern = [0,0];
     var flag = 0;
+    var conserv = 0;
     function getCSV(){
         var req = new XMLHttpRequest();
         req.open("get","toeicword.csv",true)
@@ -175,13 +175,14 @@
             cell.style.backgroundColor = "green";
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[0]++;
+            conserv = num;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         else if(cellid != "tr" && cellf[cellst[1]][cellst[2]]==0){
             cell.textContent = String(r[count]).padStart( 2 , "0" )+":"+words[r[count]][1];
-            cellid = "tr";
             ansern[0]++;
             count++;
+            conserv = num;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
@@ -206,6 +207,30 @@
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[1]++;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
+        }
+        document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+    }
+    }
+    function lastF(){
+        sw = 0;
+        if(flag == 0){
+        var cellst = cellid.split(":");
+        var tag = "tb:"+cellst[1]+":"+cellst[2];
+        var cell = document.getElementById(tag);
+        var num = cell.innerHTML.split(':');
+        if(r.length <= (ansern[0]+ansern[1])){
+            cell.style.backgroundColor = "red";
+            finish();
+        }
+        else if(ansern[1]>=25){
+            finish();
+        }
+        else if(cellf[cellst[1]][cellst[2]]==0){
+            cell.style.backgroundColor = "red";
+            cellf[cellst[1]][cellst[2]] = 1;
+            ansern[1]++;
+            ansern[0]--;
+            document.getElementById(tag).innerHTML=num[0]+":"+words[parseInt(conserv[0])][1];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
     }
