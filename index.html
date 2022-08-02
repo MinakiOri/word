@@ -12,12 +12,16 @@
         <table style="border:none" ><tr>
             <td style="border:none"><div id = "nown" >0</div></td>
             <td style="border:none">/</td>
-            <td style="border:none"><div id ="alln">0</div></td></tr>
-        </table>
+            <td style="border:none"><div id ="alln">0</div></td>
+            <td style="border:none"> &emsp; Ture &emsp;</td>
+            <td style="border:none"><div id ="anser1">0</div></td>
+            <td style="border:none"> &emsp; False &emsp;</td>
+            <td style="border:none"><div id ="anser2">0</div></td>
+        </tr></table>
         <table id = "tb" style="text-align: center"></table>
         <div id = "test" style="text-align: center">Anser</div>
         <div style="text-align: center">
-            <button style="text-align: center" onclick="lastF()">False</button>
+            <button style="text-align: center" onclick="lastF()">Change</button>
         </div>  
     </body>
     <footer>
@@ -198,6 +202,8 @@
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }*/
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+        document.getElementById("anser1").innerHTML = ansern[0];
+        document.getElementById("anser2").innerHTML = ansern[1];
     }
     }
     function AnserF(){
@@ -216,11 +222,13 @@
         }
         else if(cellf[cellst[1]][cellst[2]]==0){
             cell.style.backgroundColor = "red";
-            cellf[cellst[1]][cellst[2]] = 1;
+            cellf[cellst[1]][cellst[2]] = 2;
             ansern[1]++;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+        document.getElementById("anser1").innerHTML = ansern[0];
+        document.getElementById("anser2").innerHTML = ansern[1];
     }
     }
     function lastF(){
@@ -239,12 +247,14 @@
         }
         else if(cellf[cellst[1]][cellst[2]]==1){
             cell.style.backgroundColor = "red";
-            cellf[cellst[1]][cellst[2]] = 1;
+            cellf[cellst[1]][cellst[2]] = 2;
             ansern[1]++;
             ansern[0]--;
             document.getElementById(tag).innerHTML=num[0]+":"+words[parseInt(conserv[0])][1];
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
+        document.getElementById("anser1").innerHTML = ansern[0];
+        document.getElementById("anser2").innerHTML = ansern[1];
     }
     }
     function finish(){
@@ -264,6 +274,8 @@
             }
         }
         ff++;
+        document.getElementById("anser1").innerHTML = ansern[0];
+        document.getElementById("anser2").innerHTML = ansern[1];
     }
     function Time() {
     var realTime = new Date();
