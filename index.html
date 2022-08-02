@@ -69,6 +69,7 @@
     var ansern = [0,0];
     var flag = 0;
     var conserv = 0;
+    var ff = 1;
     function getCSV(){
         var req = new XMLHttpRequest();
         req.open("get","toeicword.csv",true)
@@ -92,7 +93,7 @@
     },false);
     function tbch(result){
         var ta = document.createElement("table");
-        var r = ram(result.length);
+        r = ram(result.length);
         document.getElementById("alln").innerHTML = r.length;
         for(var i=0;i<5;i++){
             var tr = document.createElement("tr");
@@ -139,7 +140,6 @@
             ar[i] = ar[rn];
             ar[rn] = t;
         }
-        r = ar;
         return ar;
     }
     var sw = 0;
@@ -163,15 +163,23 @@
         var cellst = cellid.split(":");
         var tag = "tb:"+cellst[1]+":"+cellst[2];
         var cell = document.getElementById(tag);
+        document.getElementById("test").innerHTML =tag;
         var num = cell.innerHTML.split(':');
         if(r.length <= (ansern[0]+ansern[1])){
             cell.style.backgroundColor = "green";
             finish();
         }
-        else if(ansern[1]>=25){
-            finish();
+        else if( (ansern[0]+ansern[1])-(ff*25) == 0){
+            change();
         }
-        else if(r.length <= count && cellf[cellst[1]][cellst[2]]==0){
+        else if(cellf[cellst[1]][cellst[2]]==0){
+            cell.style.backgroundColor = "green";
+            cellf[cellst[1]][cellst[2]] = 1;
+            ansern[0]++;
+            conserv = num;
+            document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
+        }
+        /*else if(r.length <= count && cellf[cellst[1]][cellst[2]]==0){
             cell.style.backgroundColor = "green";
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[0]++;
@@ -184,7 +192,7 @@
             count++;
             conserv = num;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
-        }
+        }*/
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
     }
     }
@@ -199,8 +207,8 @@
             cell.style.backgroundColor = "red";
             finish();
         }
-        else if(ansern[1]>=25){
-            finish();
+        else if( (ansern[0]+ansern[1]) - (ff*25) == 0){
+            change();
         }
         else if(cellf[cellst[1]][cellst[2]]==0){
             cell.style.backgroundColor = "red";
@@ -222,10 +230,10 @@
             cell.style.backgroundColor = "red";
             finish();
         }
-        else if(ansern[1]>=25){
-            finish();
+        else if( (ansern[0]+ansern[1])-(ff*25) == 0){
+            change();
         }
-        else if(cellf[cellst[1]][cellst[2]]==0){
+        else if(cellf[cellst[1]][cellst[2]]==1){
             cell.style.backgroundColor = "red";
             cellf[cellst[1]][cellst[2]] = 1;
             ansern[1]++;
@@ -238,6 +246,18 @@
     function finish(){
         document.getElementById("test").innerHTML = "Finish"
         flag = 1;
+    }
+    function change(){
+        for(var i = 0;i<5;i++){
+            for(var j = 0;j<5;j++){
+                var tagt = "tb:"+i+":"+j;
+                var cell = document.getElementById(tagt);
+                cell.textContent = String(r[(ansern[0]+ansern[1])+i*5+j])+":"+words[r[(ansern[0]+ansern[1])+i*5+j]][1];
+                cell.style.backgroundColor = "white";
+                cellf[i][j]=0;
+            }
+        }
+        ff++;
     }
     function Time() {
     var realTime = new Date();
