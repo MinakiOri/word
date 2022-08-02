@@ -74,7 +74,7 @@
     var cellf = new Array();
     var cellid = "tr"; 
     var count = 0;
-    var ansern = [0,0];
+    var ansern = [24,0];
     var flag = 0;
     var conserv = 0;
     var ff = 1;
@@ -171,7 +171,6 @@
         var cellst = cellid.split(":");
         var tag = "tb:"+cellst[1]+":"+cellst[2];
         var cell = document.getElementById(tag);
-        document.getElementById("test").innerHTML =tag;
         var num = cell.innerHTML.split(':');
         if(r.length <= (ansern[0]+ansern[1])){
             cell.style.backgroundColor = "green";
@@ -264,7 +263,7 @@
     function change(){
         for(var i = 0;i<5;i++){
             for(var j = 0;j<5;j++){
-                if(r.length <= (ansern[0]+ansern[1])){
+                if(r.length >= (ansern[0]+ansern[1])){
                 var tagt = "tb:"+i+":"+j;
                 var cell = document.getElementById(tagt);
                 cell.textContent = String(r[(ansern[0]+ansern[1])+i*5+j])+":"+words[r[(ansern[0]+ansern[1])+i*5+j]][1];
