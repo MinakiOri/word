@@ -74,7 +74,7 @@
     var cellf = new Array();
     var cellid = "tr"; 
     var count = 0;
-    var ansern = [24,0];
+    var ansern = [0,0];
     var flag = 0;
     var conserv = 0;
     var ff = 1;
@@ -176,7 +176,7 @@
             cell.style.backgroundColor = "green";
             finish();
         }
-        else if( (ansern[0]+ansern[1])-(ff*25) == 0){
+        else if( (ansern[0]+ansern[1])-(ff*25) >= 0){
             change();
         }
         else if(cellf[cellst[1]][cellst[2]]==0){
@@ -216,7 +216,7 @@
             cell.style.backgroundColor = "red";
             finish();
         }
-        else if( (ansern[0]+ansern[1]) - (ff*25) == 0){
+        else if( (ansern[0]+ansern[1]) - (ff*25) >= 0){
             change();
         }
         else if(cellf[cellst[1]][cellst[2]]==0){
@@ -241,7 +241,7 @@
             cell.style.backgroundColor = "red";
             finish();
         }
-        else if( (ansern[0]+ansern[1])-(ff*25) == 0){
+        else if( (ansern[0]+ansern[1])-(ff*25) >= 0){
             change();
         }
         else if(cellf[cellst[1]][cellst[2]]==1){
