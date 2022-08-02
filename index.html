@@ -5,7 +5,7 @@
 <title>WordRmember</title>
 </head>
 <header>
-	<h1><font color = "white">Word</font></h1>
+	<h1 style="text-align: center"><font color = "white">Word</font></h1>
 </header>
 
     <body>
@@ -58,6 +58,10 @@
       margin:auto;
       border: solid 1px;
       border-collapse:  collapse;
+      font-size:20px
+    }
+    button{
+        font-size: 20px;
     }
 </style>
 <script type = "text/javascript">
@@ -250,11 +254,13 @@
     function change(){
         for(var i = 0;i<5;i++){
             for(var j = 0;j<5;j++){
+                if(r.length <= (ansern[0]+ansern[1])){
                 var tagt = "tb:"+i+":"+j;
                 var cell = document.getElementById(tagt);
                 cell.textContent = String(r[(ansern[0]+ansern[1])+i*5+j])+":"+words[r[(ansern[0]+ansern[1])+i*5+j]][1];
                 cell.style.backgroundColor = "white";
                 cellf[i][j]=0;
+                }
             }
         }
         ff++;
