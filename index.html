@@ -275,7 +275,9 @@
             cellf[cellst[1]][cellst[2]] = 2;
             ansern[1]++;
             document.getElementById("test").innerHTML=words[parseInt(num[0])][4];
-            words[parseInt(num[0])][3]--;
+            if(words[parseInt(num[0])][3] == 0){
+                words[parseInt(num[0])][3]--;
+            }
         }
         document.getElementById("nown").innerHTML = (ansern[0]+ansern[1]);
         document.getElementById("anser1").innerHTML = ansern[0];
